@@ -29,14 +29,16 @@ jobs:
           pip install requests flet-charts
 
       - name: Build APK
-        # כאן אנחנו אומרים לו להיכנס לתיקייה Takziv2 לפני הרצת הפקודה
-        working-directory: ./Takziv2
         run: |
+          # פקודה שמוצאת איפה הקובץ נמצא ומריצה את הבנייה משם
+          FILE_PATH=$(find . -name "main.py" -print -quit)
+          FILE_DIR=$(dirname "$FILE_PATH")
+          cd "$FILE_DIR"
           flet build apk --module-name main
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-release
-          # כאן אנחנו אומרים לו לחפש את ה-APK שנוצר בתוך התיקייה
-          path: Takziv2/build/apk/*.apk
+          # פקודה שמוצאת את ה-APK בכל מקום שבו הוא נוצר
+          path: "**/build/apk/*.apk"
