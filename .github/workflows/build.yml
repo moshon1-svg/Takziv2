@@ -29,11 +29,14 @@ jobs:
           pip install requests flet-charts
 
       - name: Build APK
+        # כאן אנחנו אומרים לו להיכנס לתיקייה Takziv2 לפני הרצת הפקודה
+        working-directory: ./Takziv2
         run: |
-          flet build apk main.py
+          flet build apk --module-name main
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-release
-          path: build/apk/*.apk
+          # כאן אנחנו אומרים לו לחפש את ה-APK שנוצר בתוך התיקייה
+          path: Takziv2/build/apk/*.apk
