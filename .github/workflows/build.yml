@@ -30,15 +30,20 @@ jobs:
 
       - name: Build APK
         run: |
-          # פקודה שמוצאת איפה הקובץ נמצא ומריצה את הבנייה משם
+          # מחפש את התיקייה שבה נמצא הקוד ומבצע את הבנייה משם
           FILE_PATH=$(find . -name "main.py" -print -quit)
           FILE_DIR=$(dirname "$FILE_PATH")
           cd "$FILE_DIR"
-          flet build apk --module-name main
+          
+          # יצירת קובץ דרישות זמני כדי לוודא ש-Flet אורז הכל לתוך ה-APK
+          echo "requests" > requirements.txt
+          echo "flet-charts" >> requirements.txt
+          
+          # בניית ה-APK עם המודול והדרישות
+          flet build apk --module-name main --requirements requirements.txt
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-release
-          # פקודה שמוצאת את ה-APK בכל מקום שבו הוא נוצר
           path: "**/build/apk/*.apk"
