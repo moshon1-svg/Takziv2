@@ -23,9 +23,6 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Install Dependencies
         run: |
           pip install "flet[all]"
@@ -33,4 +30,10 @@ jobs:
 
       - name: Build APK
         run: |
-          flet build apk --main main.py --verbose
+          flet build apk main.py
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: build/apk/*.apk
